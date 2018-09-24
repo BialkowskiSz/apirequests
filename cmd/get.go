@@ -15,17 +15,30 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 
+	sm "github.com/BialkowskiSz/go-sportmonks"
 	"github.com/spf13/cobra"
 )
 
 // getCmd represents the get command
 var getCmd = &cobra.Command{
-	Use:   "get",
+	Use: "get -t <api_token> -e <endpoint>",
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) > 0 {
+			return errors.New("Unspecified argument(s)")
+		}
+		return nil
+	},
 	Short: "Make a GET request to Sportmonks",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("get called")
+		sm.SetAPIToken(token)
+		d, err := sm.Get(endpoint, includes, page, allPages)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(string(d))
 	},
 }
 
