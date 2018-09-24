@@ -29,7 +29,21 @@ var getCmd = &cobra.Command{
 	},
 }
 
+var token string
+var endpoint string
+var includes string
+var page int
+var allPages bool
+
 func init() {
 	rootCmd.AddCommand(getCmd)
 
+	getCmd.Flags().StringVarP(&token, "token", "t", "", "API access token for request")
+	getCmd.Flags().StringVarP(&endpoint, "endpoint", "e", "", "API Endpoint")
+	getCmd.Flags().StringVarP(&includes, "includes", "i", sm.NoIncludes, "API request includes")
+	getCmd.Flags().IntVarP(&page, "page", "p", sm.FirstOrAllPages, "Specify results page to get")
+	getCmd.Flags().BoolVarP(&allPages, "all-pages", "a", sm.AllPages, "Get all request pages")
+
+	getCmd.MarkFlagRequired("api-token")
+	getCmd.MarkFlagRequired("endpoint")
 }
